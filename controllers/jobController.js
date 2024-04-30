@@ -1,4 +1,6 @@
+import "express-async-errors";  // A middleware. we don't need to set "try catch" for every async controller
 import { nanoid } from "nanoid";
+import Job from '../models/JobModel.js';
 
 let jobs = [
   { id: nanoid(), company: 'apple', position: 'front-end' },
@@ -10,13 +12,7 @@ export const getAllJobs = async (req, res) => {
 };
 
 export const createJob = async (req, res) => {
-  const { company, position } = req.body;
-  if (!company || !position) {
-    return res.status(400).json({ msg: 'please provide company and position' });
-  }
-  const id = nanoid(10);
-  const job = { id, company, position };
-  jobs.push(job);
+  const job = await Job.create(req.body);
   res.status(201).json({ job });
 };
 
