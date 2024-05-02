@@ -4,7 +4,6 @@ import * as dotenv from 'dotenv';
 import jobRouter from './routers/jobRouter.js';
 import mongoose from "mongoose";
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
-import { body, validationResult } from 'express-validator';
 
 dotenv.config();
 
