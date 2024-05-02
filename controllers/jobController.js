@@ -1,14 +1,15 @@
 import "express-async-errors";  // A middleware. we don't need to set "try catch" for every async controller
 import Job from '../models/JobModel.js';
+import { StatusCodes } from "http-status-codes";
 
 export const getAllJobs = async (req, res) => {
   const jobs = await Job.find({});
-  res.status(200).json({ jobs });
+  res.status(StatusCodes.OK).json({ jobs });
 };
 
 export const createJob = async (req, res) => {
   const job = await Job.create(req.body);
-  res.status(201).json({ job });
+  res.status(StatusCodes.CREATED).json({ job });
 };
 
 export const getJob = async (req, res) => {
@@ -18,7 +19,7 @@ export const getJob = async (req, res) => {
     // id length should be same
     return res.status(404).json({ msg: `no job with id ${id}` });
   }
-  res.status(200).json({ job });
+  res.status(StatusCodes.OK).json({ job });
 };
 
 export const updateJob = async (req, res) => {
@@ -27,7 +28,7 @@ export const updateJob = async (req, res) => {
   if (!updateJob) {
     return res.status(404).json({ msg: `no job with id ${id}` });
   }
-  res.status(200).json({ msg: 'job modified', job: updatedJob });
+  res.status(StatusCodes.OK).json({ msg: 'job modified', job: updatedJob });
 };
 
 export const deleteJob = async (req, res) => {
@@ -37,5 +38,5 @@ export const deleteJob = async (req, res) => {
     return res.status(404).json({ msg: `no job with id ${id}` });
   }
 
-  res.status(200).json({ msg: 'job deleted', job: deletedJob });
+  res.status(StatusCodes.OK).json({ msg: 'job deleted', job: deletedJob });
 };
