@@ -1,9 +1,15 @@
 import express from "express";
 import morgan from "morgan";
 import * as dotenv from 'dotenv';
-import jobRouter from './routers/jobRouter.js';
+
 import mongoose from "mongoose";
+
+// Middleware
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
+
+// Routers
+import jobRouter from './routers/jobRouter.js';
+import authRouter from './routers/authRouter.js';
 
 dotenv.config();
 
@@ -16,7 +22,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-
+app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', jobRouter);
 
 // Customize not found message
