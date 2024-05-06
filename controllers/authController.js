@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import User from '../models/UserModel.js';
-import bcrypt from 'bcryptjs';
+import { hashPassword } from "../utils/passwordUtils.js";
 
 export const register = async (req, res) => {
   // first registered user is an admin
@@ -8,13 +8,11 @@ export const register = async (req, res) => {
   req.body.role = isFirstAccount ? 'admin' : 'user';
 
   // hash password
-  // salt is a random value added to it before hashing
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(req.body.password, salt);
+  const hashedPassword = await hashPassword(req.body.password);
   req.body.password = hashedPassword;
 
   const user = await User.create(req.body);
-  res.status(StatusCodes.CREATED).json({ user });
+  res.status(StatusCodes.CREATED).json({ msg: 'user created' });
 };
 
 export const login = async (req, res) => {
