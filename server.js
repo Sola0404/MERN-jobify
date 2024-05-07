@@ -1,11 +1,12 @@
 import express from "express";
 import morgan from "morgan";
 import * as dotenv from 'dotenv';
-
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 
 // Middleware
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
+import { authenticateUser } from "./middleware/authMiddleware.js";
 
 // Routers
 import jobRouter from './routers/jobRouter.js';
@@ -16,6 +17,7 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 
 if (process.env.NODE_ENV === 'development') {
   // HTTP request logger middleware
@@ -23,7 +25,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/jobs', jobRouter);
+app.use('/api/v1/jobs', authenticateUser, jobRouter);
 
 // Customize not found message
 app.use('*', (req, res) => {
