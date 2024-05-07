@@ -11,6 +11,7 @@ import { authenticateUser } from "./middleware/authMiddleware.js";
 // Routers
 import jobRouter from './routers/jobRouter.js';
 import authRouter from './routers/authRouter.js';
+import userRouter from './routers/userRouter.js';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authenticateUser, jobRouter);
+app.use('/api/v1/users', authenticateUser, userRouter);
 
 // Customize not found message
 app.use('*', (req, res) => {
