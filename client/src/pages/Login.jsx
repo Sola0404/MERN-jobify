@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Wrapper from "../assets/wrappers/RegisterAndLoginPage";
 import { FormRow, Logo } from "../components";
-import customFetch from "../../../utils/customFetch.js";
+import customFetch from "../utils/customFetch.js";
 import { toast } from "react-toastify";
 
 export const action = async ({ request }) => {
