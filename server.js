@@ -13,12 +13,19 @@ import jobRouter from './routers/jobRouter.js';
 import authRouter from './routers/authRouter.js';
 import userRouter from './routers/userRouter.js';
 
-dotenv.config();
+// Public
+import { dirname } from 'path';
+import { fileURLToPath } from "url";
+import path from "path";
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+dotenv.config();
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static(path.resolve(__dirname, './public')));
 
 if (process.env.NODE_ENV === 'development') {
   // HTTP request logger middleware
