@@ -19,12 +19,6 @@ import { dirname } from 'path';
 import { fileURLToPath } from "url";
 import path from "path";
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET,
-});
-
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 dotenv.config();
@@ -38,6 +32,12 @@ if (process.env.NODE_ENV === 'development') {
   // HTTP request logger middleware
   app.use(morgan('dev'));
 }
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 app.get('/api/v1/test', (req, res) => {
   res.json({ msg: 'test route' });
