@@ -5,7 +5,6 @@ import { useLoaderData } from "react-router-dom";
 export const loader = async () => {
 	try {
 		const response = await customFetch.get("/jobs/stats");
-		console.log(response);
 		return response.data;
 	} catch (error) {
 		return error;
