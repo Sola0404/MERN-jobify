@@ -26,7 +26,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static(path.resolve(__dirname, './public')));
+app.use(express.static(path.resolve(__dirname, './client/dist')));
 
 if (process.env.NODE_ENV === 'development') {
   // HTTP request logger middleware
@@ -48,7 +48,7 @@ app.use('/api/v1/jobs', authenticateUser, jobRouter);
 app.use('/api/v1/users', authenticateUser, userRouter);
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './public', 'index.html'));
+  res.sendFile(path.resolve(__dirname, './client/dist', 'index.html'));
 });
 
 // Customize not found message
