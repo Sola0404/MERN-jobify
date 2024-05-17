@@ -10,7 +10,6 @@ import customFetch from "../utils/customFetch";
 import Wrapper from "../assets/wrappers/Dashboard";
 import { SmallSidebar, BigSidebar, Navbar, Loading } from "../components";
 import { createContext, useContext, useState } from "react";
-import { checkDefaultTheme } from "../App";
 // global context
 const DashboardContext = createContext();
 
@@ -23,11 +22,11 @@ export const loader = async () => {
 	}
 };
 
-const DashboardLayout = () => {
+const DashboardLayout = ({ isDarkThemeEnabled }) => {
 	const { user } = useLoaderData();
 	const navigate = useNavigate();
 	const [showSidebar, setShowSidebar] = useState(false);
-	const [isDarkTheme, setIsDarkTheme] = useState(checkDefaultTheme);
+	const [isDarkTheme, setIsDarkTheme] = useState(isDarkThemeEnabled);
 
 	const toggleDarkTheme = () => {
 		const newDarkTheme = !isDarkTheme;

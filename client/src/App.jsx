@@ -13,6 +13,8 @@ import {
 	Admin,
 	EditJob,
 } from "./pages";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { action as registerAction } from "./pages/Register";
 import { action as loginAction } from "./pages/Login";
 import { action as addJobAction } from "./pages/AddJob";
@@ -31,7 +33,15 @@ export const checkDefaultTheme = () => {
 	return isDarkTheme;
 };
 
-checkDefaultTheme();
+const isDarkThemeEnabled = checkDefaultTheme();
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 1000 * 60 * 5,
+		},
+	},
+});
 
 const router = createBrowserRouter([
 	{
@@ -52,7 +62,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "dashboard",
-				element: <DashboardLayout />,
+				element: <DashboardLayout isDarkThemeEnabled={isDarkThemeEnabled} />,
 				loader: dashboardLoader,
 				children: [
 					{
@@ -93,6 +103,11 @@ const router = createBrowserRouter([
 	},
 ]);
 const App = () => {
-	return <RouterProvider router={router} />;
+	return (
+		<QueryClientProvider client={queryClient}>
+			<RouterProvider router={router} />
+			<ReactQueryDevtools initialIsOpen={false} />
+		</QueryClientProvider>
+	);
 };
 export default App;
