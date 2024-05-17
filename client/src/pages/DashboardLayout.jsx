@@ -1,8 +1,14 @@
-import { Outlet, redirect, useLoaderData, useNavigate } from "react-router-dom";
+import {
+	Outlet,
+	redirect,
+	useLoaderData,
+	useNavigate,
+	useNavigation,
+} from "react-router-dom";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
 import Wrapper from "../assets/wrappers/Dashboard";
-import { SmallSidebar, BigSidebar, Navbar } from "../components";
+import { SmallSidebar, BigSidebar, Navbar, Loading } from "../components";
 import { createContext, useContext, useState } from "react";
 import { checkDefaultTheme } from "../App";
 // global context
@@ -40,6 +46,9 @@ const DashboardLayout = () => {
 		toast.success("Logging out...");
 	};
 
+	const navigation = useNavigation();
+	const isPageLoading = navigation.state === "loading";
+
 	return (
 		<DashboardContext.Provider
 			value={{
@@ -58,7 +67,7 @@ const DashboardLayout = () => {
 					<div>
 						<Navbar />
 						<div className="dashboard-page">
-							<Outlet context={{ user }} />
+							{isPageLoading ? <Loading /> : <Outlet context={{ user }} />}
 						</div>
 					</div>
 				</main>
