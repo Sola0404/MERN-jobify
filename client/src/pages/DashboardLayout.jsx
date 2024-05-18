@@ -1,29 +1,31 @@
-import {
-	Outlet,
-	redirect,
-	useLoaderData,
-	useNavigate,
-	useNavigation,
-} from "react-router-dom";
+import { Outlet, redirect, useNavigate, useNavigation } from "react-router-dom";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
 import Wrapper from "../assets/wrappers/Dashboard";
 import { SmallSidebar, BigSidebar, Navbar, Loading } from "../components";
 import { createContext, useContext, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 // global context
 const DashboardContext = createContext();
 
-export const loader = async () => {
-	try {
+const userQuery = {
+	queryKey: ["user"],
+	queryFn: async () => {
 		const { data } = await customFetch("/users/current-user");
 		return data;
+	},
+};
+
+export const loader = (queryClient) => async () => {
+	try {
+		return await queryClient.ensureQueryData(userQuery);
 	} catch (error) {
 		return redirect("/");
 	}
 };
 
-const DashboardLayout = ({ isDarkThemeEnabled }) => {
-	const { user } = useLoaderData();
+const DashboardLayout = ({ isDarkThemeEnabled, queryClient }) => {
+	const { user } = useQuery(userQuery)?.data;
 	const navigate = useNavigate();
 	const [showSidebar, setShowSidebar] = useState(false);
 	const [isDarkTheme, setIsDarkTheme] = useState(isDarkThemeEnabled);
