@@ -4,6 +4,8 @@ import * as dotenv from 'dotenv';
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cloudinary from 'cloudinary';
+import helmet from 'helmet';
+import mongoSanitize from "express-mongo-sanitize";
 
 // Middleware
 import errorHandlerMiddleware from "./middleware/errorHandlerMiddleware.js";
@@ -27,6 +29,8 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.resolve(__dirname, './client/dist')));
+app.use(helmet());
+app.use(mongoSanitize());
 
 if (process.env.NODE_ENV === 'development') {
   // HTTP request logger middleware
@@ -37,10 +41,6 @@ cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_API_SECRET,
-});
-
-app.get('/api/v1/test', (req, res) => {
-  res.json({ msg: 'test route' });
 });
 
 app.use('/api/v1/auth', authRouter);
